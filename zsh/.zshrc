@@ -1,5 +1,5 @@
 export ZSH="/home/feng/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(git vi-mode sudo)
 
 source $ZSH/oh-my-zsh.sh
@@ -39,6 +39,11 @@ function zle-keymap-select {
 }
 zle -N zle-keymap-select
 
+
+# thefuck
+eval $(thefuck --alias)
+
+
 # alias
 alias s='neofetch'
 alias vim='nvim'
@@ -71,3 +76,6 @@ fkill() {
 	echo $pid | xargs kill -${1:-9}
   fi
 }
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
