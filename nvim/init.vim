@@ -62,82 +62,8 @@ set ignorecase
 set smartcase
 set shortmess+=c
 set inccommand=split
-set completeopt=longest,noinsert,menuone,noselect,preview
-set ttyfast "should make scrolling faster
-set lazyredraw "same as above
-set visualbell
-silent !mkdir -p ~/.config/nvim/tmp/backup
-silent !mkdir -p ~/.config/nvim/tmp/undo
-silent !mkdir -p ~/.config/nvim/tmp/sessions
-set backupdir=~/.config/nvim/tmp/backup,.
-set directory=~/.config/nvim/tmp/backup,.
-if has('persistent_undo')
-	set undofile
-	set undodir=~/.config/nvim/tmp/undo,.
-endif
-set colorcolumn=80
-set updatetime=1000
-set virtualedit=block
-
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
-" ===
-" === Terminal Behaviors
-" ===
-let g:neoterm_autoscroll = 1
-autocmd TermOpen term://* startinsert
-tnoremap <C-N> <C-\><C-N>
-tnoremap <C-O> <C-\><C-N><C-O>
-let g:terminal_color_0  = '#000000'
-let g:terminal_color_1  = '#FF5555'
-let g:terminal_color_2  = '#50FA7B'
-let g:terminal_color_3  = '#F1FA8C'
-let g:terminal_color_4  = '#BD93F9'
-let g:terminal_color_5  = '#FF79C6'
-let g:terminal_color_6  = '#8BE9FD'
-let g:terminal_color_7  = '#BFBFBF'
-let g:terminal_color_8  = '#4D4D4D'
-let g:terminal_color_9  = '#FF6E67'
-let g:terminal_color_10 = '#5AF78E'
-let g:terminal_color_11 = '#F4F99D'
-let g:terminal_color_12 = '#CAA9FA'
-let g:terminal_color_13 = '#FF92D0'
-let g:terminal_color_14 = '#9AEDFE'
-augroup TermHandling
-  autocmd!
-  " Turn off line numbers, listchars, auto enter insert mode and map esc to
-  " exit insert mode
-  autocmd TermOpen * setlocal listchars= nonumber norelativenumber
-    \ | startinsert
-    \ | tnoremap <Esc> <c-c>
-  autocmd FileType fzf call LayoutTerm(0.6, 'horizontal')
-augroup END
-
-function! LayoutTerm(size, orientation) abort
-  let timeout = 16.0
-  let animation_total = 120.0
-  let timer = {
-    \ 'size': a:size,
-    \ 'step': 1,
-    \ 'steps': animation_total / timeout
-  \}
-
-  if a:orientation == 'horizontal'
-    resize 1
-    function! timer.f(timer)
-      execute 'resize ' . string(&lines * self.size * (self.step / self.steps))
-      let self.step += 1
-    endfunction
-  else
-    vertical resize 1
-    function! timer.f(timer)
-      execute 'vertical resize ' . string(&columns * self.size * (self.step / self.steps))
-      let self.step += 1
-    endfunction
-  endif
-  call timer_start(float2nr(timeout), timer.f, {'repeat': float2nr(timer.steps)})
-endfunction
 
 
 " ===
@@ -168,6 +94,17 @@ nnoremap > >>
 
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
+
+" ===
+" === Markdown Settings
+" ===
+" Snippets
+source ~/.config/nvim/md-snippets.vim
+au BufRead,BufNewFile *.md setfiletype markdown
+
+" Press space twice to jump to the next '<++>' and edit it
+noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
+
 
 
 " ===
@@ -209,56 +146,14 @@ noremap cz <C-w>t<C-w>H
 
 
 
-" ===
-" === Markdown Settings
-" ===
-" Snippets
-source ~/.config/nvim/md-snippets.vim
-" auto spell
-autocmd BufRead,BufNewFile *.md setlocal spell
-
 
 " ===
 " === Other useful stuff
 " ===
-" Press space twice to jump to the next '<++>' and edit it
-noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
 
 " Auto change directory to current dir
 autocmd BufEnter * silent! lcd %:p:h
-
-" Compile function
-noremap r :call CompileRunGcc()<CR>
-func! CompileRunGcc()
-	exec "w"
-	if &filetype == 'c'
-		exec "!g++ % -o %<"
-		exec "!time ./%<"
-	elseif &filetype == 'cpp'
-		set splitbelow
-		exec "!g++ -std=c++11 % -Wall -o %<"
-		:sp
-		:res -15
-		:term ./%<
-	elseif &filetype == 'java'
-		exec "!javac %"
-		exec "!time java %<"
-	elseif &filetype == 'sh'
-		:!time bash %
-	elseif &filetype == 'python'
-		set splitbelow
-		:sp
-		:term python3 %
-	elseif &filetype == 'html'
-		silent! exec "!".g:mkdp_browser." % &"
-	elseif &filetype == 'go'
-		set splitbelow
-		:sp
-		:term go run %
-	endif
-endfunc
-
 
 " ===
 " === Install Plugins with Vim-Plug
@@ -321,6 +216,14 @@ colorscheme gruvbox
 " ===
 let g:airline_powerline_fonts = 0
 
+
+" ===
+" === indentLine
+" ===
+let g:indentLine_fileTypeExclude = ['markdown']
+
+
+
 " ===
 " === nerdtree
 " ===
@@ -334,6 +237,7 @@ let g:ctrlp_map = '<c-p>'
 " ===
 " === easymotion
 " ===
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
 nmap ss <Plug>(easymotion-s2)
 
 
@@ -341,33 +245,6 @@ nmap ss <Plug>(easymotion-s2)
 " === tagbar
 " ===
 nmap <leader>b :TagbarToggle<CR>
-
-
-
-
-" ===
-" === coc
-" ===
-" fix the most annoying bug that coc has
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-git', 'coc-pyright', 'coc-sourcekit','coc-snippets']
-"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]	=~ '\s'
-endfunction
-inoremap <silent><expr> <Tab>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<Tab>" :
-			\ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <silent><expr> <CR> pumvisible() ? "\<C-y><CR>" : "\<CR>"
-function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
 
 
 " ===
@@ -382,18 +259,6 @@ let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 " === Undotree
 " ===
 noremap <leader>u :UndotreeToggle<CR>
-let g:undotree_DiffAutoOpen = 1
-let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_ShortIndicators = 1
-let g:undotree_WindowLayout = 2
-let g:undotree_DiffpanelHeight = 8
-let g:undotree_SplitWidth = 24
-function g:Undotree_CustomMap()
-	nmap <buffer> k <plug>UndotreeNextState
-	nmap <buffer> j <plug>UndotreePreviousState
-	nmap <buffer> K 5<plug>UndotreeNextState
-	nmap <buffer> J 5<plug>UndotreePreviousState
-endfunc
 
 
 

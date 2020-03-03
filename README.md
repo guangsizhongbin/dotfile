@@ -153,3 +153,5 @@ Files [PATH] 模糊搜索目录
 ## neoformat
 sudo pacman -S astyle
 
+
+# nvim with tmux
