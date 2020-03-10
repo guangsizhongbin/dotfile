@@ -50,6 +50,9 @@ alias vim='nvim'
 alias hs="hexo clean && hexo g && hexo s"
 alias hd="hexo clean && hexo g && hexo deploy"
 alias ra="ranger"
+alias tn="tmux new -s"
+alias ts="tmux switch -t"
+alias ta="tmux attach -t"
 
 # fzf
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --preview '(cat -O ansi {} || cat {}) 2> /dev/null | head -500'"
@@ -79,3 +82,5 @@ fkill() {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+

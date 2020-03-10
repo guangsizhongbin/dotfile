@@ -62,8 +62,17 @@ set ignorecase
 set smartcase
 set shortmess+=c
 set inccommand=split
+silent !mkdir -p ~/.config/nvim/tmp/backup
+silent !mkdir -p ~/.config/nvim/tmp/undo
+"silent !mkdir -p ~/.config/nvim/tmp/sessions
+set backupdir=~/.config/nvim/tmp/backup,.
+set directory=~/.config/nvim/tmp/backup,.
+if has('persistent_undo')
+	set undofile
+	set undodir=~/.config/nvim/tmp/undo,.
+endif
 
-
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 " ===
@@ -76,10 +85,13 @@ let mapleader=" "
 " Save & quit
 noremap S :w<CR>
 noremap R :source $MYVIMRC<CR>
-noremap Q :q!<CR>
 
 " Open the vimrc file anytime
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
+
+" Neoformat
+noremap ne :Neoformat<CR>
+
 
 
 " make Y to copy till the end of the line
@@ -166,6 +178,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Yggdroot/indentLine'
 Plug 'morhetz/gruvbox'
+Plug 'ryanoasis/vim-devicons'
+
 
 " file explorer
 Plug 'preservim/nerdtree'
@@ -191,6 +205,7 @@ Plug 'mbbill/undotree'
 
 " Markdown
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 " git
 Plug 'tpope/vim-fugitive'
@@ -201,9 +216,6 @@ Plug 'tpope/vim-commentary'
 
 " formatting code
 Plug 'sbdchd/neoformat'
-
-" check
-Plug 'dense-analysis/ale'
 
 call plug#end()
 colorscheme gruvbox
@@ -256,10 +268,15 @@ let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 
 
 " ===
-" === Undotree
+" === undotree
 " ===
 noremap <leader>u :UndotreeToggle<CR>
 
+
+" ===
+" === neofomat
+" ===
+let g:neoformat_run_all_formatters = 1
 
 
 

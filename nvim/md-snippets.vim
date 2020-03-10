@@ -21,6 +21,9 @@ autocmd Filetype markdown inoremap <buffer> ,sp <span id="inline-purple"></span>
 autocmd Filetype markdown inoremap <buffer> ,sy <span id="inline-yellow"></span><ESC>1F>a
 autocmd Filetype markdown inoremap <buffer> ,sg <span id="inline-green"></span><ESC>1F>a
 autocmd Filetype markdown inoremap <buffer> ,sr <span id="inline-red"></span><ESC>1F>a
+autocmd Filetype markdown inoremap <buffer> ,a {% tabs <++> %}<ENTER><Space><!-- tab <++> --><ENTER><++><ENTER><!-- endtab --><ENTER><ESC>0A{% endtabs %}<Esc>5k
+autocmd Filetype markdown inoremap <buffer> ,s <!-- tab <++> --><enter><++><enter><!-- endtab --><Esc>3k
+
 autocmd Filetype markdown vnoremap <buffer> ,lh dd<ESC>i<span id="inline-blue"></span><Space><++><ESC>2F>p
 autocmd Filetype markdown vnoremap <buffer> ,tw dd<ESC>i<span id="inline-purple"></span><Space><++><ESC>2F>p
 autocmd Filetype markdown vnoremap <buffer> ,zg dd<ESC>i<span id="inline-yellow"></span><Space><++><ESC>2F>p
