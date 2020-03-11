@@ -2,7 +2,7 @@
 RED_COLOR='\E[1;31m'
 GREEN_COLOR='\E[1;32m'
 
-dotfiles=("ranger" "nvim" "zsh" "tmux")
+dotfiles=("nvim" "zsh" "tmux")
 config="$HOME/.config"
 dotfile="$HOME/dotfile"
 
@@ -15,7 +15,7 @@ then
 	echo -e "${GREEN_COLOR} $dot complete"
 else
 	ln -s $dotfile/$dot $config/$dot
-	if [ $? ne 0 ] 
+	if [ $? ne 0 ]
 	then
 		echo “$dot fail”
 	else

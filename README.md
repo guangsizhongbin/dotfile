@@ -1,157 +1,163 @@
-## 进入插入模式
-A append after line
-I insert before line
-O append a line above
-o open a line below
+[toc]
 
-ctrl + h 删除上一字符
-ctrl + w 删除上一单词
-ctrl + u 删除当前行
+## Keyboard Shortcuts
 
-gi 快速跳转到最后一次编辑的地方并进入插入模式
+### 1. Bascic Editor Features
 
+#### 1.1 The Most Basic
 
-## 快速移动
+`S` : saves the current file
+`R` : resorce the vimrc file
 
-w/W 移下一个 word/WORD开头。 e/E 下一个word/W
-b/B 移动到上一个
+#### 1.2 Cursor Movement
 
-word 指的是以非空白符分割的单词 ，WORD以空白符分割的单词。
+| Shortcuts | Action                          |
+|-----------|---------------------------------|
+| `h`       | Cursor left                     |
+| `l`       | Cursor right                    |
+| `j`       | Cursor down a terminal line     |
+| `k`       | Cursor up a terminal line       |
+| `0`       | Cursor to the start of the line |
+| `$`       | Cursor to the end of the line   |
+| `e`       | Move to the end of the word     |
+| `b`       | Move to the start the word      |
 
-f{char} 移动到char字符上，t移动到char的前一个字符, ;/, 继续搜改行下一个/上一个
-F 反过来搜索
+####  1.3 Insert Mode Keys
 
-0 移到行首
-$ 移动到行尾
+| Shortcut      | Action                             |
+|---------------|------------------------------------|
+| `Shift` + `a` | Move cursor to the end of the line |
+| `Shift` + `i` | Move cursor to the start of the line |
 
+#### 1.4 Text Manipulating Commands in Normal Mode
 
-## 垂直移动(easy-motion)
+| Shortcut        | Action                           |
+|-----------------|----------------------------------|
+| `u`             | undo                             |
+| `<`             | Un-indent                        |
+| `>`             | Indent                           |
+| `SPACE` `SPACE` | Goto the next placeholder (<++>) |
 
-## 页面移动
-gg
-G
+#### 1.5 Other Useful Normal Mode Remappings
 
-H(HEAD)
-M(MIDDLE)
-L(Lower)
+| Shortcut        | Action                       |
+|-----------------|------------------------------|
+| `r`             | Compile/Run the current file |
+| `Space` `s` `c` | Toggle spell suggestion a    |
 
-ctrl+u 上翻
-ctrl+f 下翻
-zz 把屏幕放在中间
+#### 1.6 Command in Visual Mode
 
-## vim 增删改查
+| Shortcut | Action                                 |
+|----------|----------------------------------------|
+| Y        | Copy selected text to system clipboard |
 
-x 
-diw 
-daw 包括空格
+### 2. Window Management 
 
+#### 2.1 Creating Window Through Split Screen 
 
-r(repalce)
-c(change)
-s(substitute)
-
-## 搜索替换
-：[range]s[ubstitute]/{pattern}/{string}/{flags}
-
-range --> 10，20 表示10-20行，%表示全部行
-falgs:
-	g(global) 表示全局范围内执行
-	c(confirm)表示确认，可以确认或拒绝修改
-	n(number)报告匹配到的次数而不替换，可以用来查询匹配次数。
-
-
-## text object
-
-[number]<command>[text object]
+| Shortcut | Action                                                                     |
+|----------|----------------------------------------------------------------------------|
+| `s` `k`  | Create a new horizontal split screen and place it above the current window |
+| `s` `j`  | Create a new horizontal split screen and place it below the current window |
+| `s` `h`  | Create a vertical split screen and place it left to the current window     |
+| `s` `j`  | Create a vertical split screen adn place it right to the current window    |
 
 
-ciw
-ci
+#### 2.2 Moving the Cursor Between Different Windows
 
-### 寄存器
-"a
-"b
-clipboard
+| Shortcut    | Action                      |
+|-------------|-----------------------------|
+| `SPACE`+`H` | Move cursor one window left |
+| `SPACE`+`L` | Move cursor one window right |
+| `SPACE`+`J` | Move cursor one window down |
+| `SPACE`+`k` | Move cursor one window up |
 
-### 宏
-q 录制
-q 结束录制
-@{register} 回放
+#### 2.3 Resizing Different Windows
 
-q{register}
+Use the arrow keys to resize the current window.
 
-ctrl +n 和 ctrl +p 补全
-with open('./ranger/rc.conf')
+## Plugins Keybindings 
 
+### AutoCompletion
 
+#### COC
 
-
-
-
-
-
-
+| Shortcut    | Action                |
+|-------------|-----------------------|
+| `SPACE` `y` | Get yank history list |
+| `tt`        | coc-explorer          |
+| `gd`        | Got to definition     |
 
 
-# file explorer
-## nerdtree
-`<leader>t :NERDTreeToggle<CR>`
+#### Ultisnips
 
-## ctrlp
-`<c-p>`
+| Shortcut   | Action                                           |
+|------------|--------------------------------------------------|
+| `Ctrl` `e` | Expand a snippet                                 |
+| `Ctrl` `n` | (in snippet) Previous Cursor position in snippet |
+| `Ctrl` `N` | (in snippet) Next Cursor position in snippet     |
 
-## fzf
-Ag [PATTERN] 模糊搜索字符串
-Files [PATH] 模糊搜索目录
+### Markdown 
 
+#### vim-table-mode
 
-# move
-## easymotion
-`ss`
+| Shortcut   | Action               |
+|------------|----------------------|
+| <LEADER>tm | :TableModeToggle<CR> |
+| `r`        | :MarkdownPreview     |
 
-# Editor Enhancement
-## vim-surround
-"cs"  change surround
-"ds"  delete surround
-"ys"  add surround
+### tag
 
-"yss)" wrap the entire in parentheses.
+#### Vista
 
-单词 w
-句子 s
-段落 p
+| Shortcut  | Action       |
+|-----------|--------------|
+| <leader>b | :Vista!!<CR> |
 
+#### undotree
 
-## vim-bookmark
-
-| Action                                 | Shortcut | Command             |
-|----------------------------------------|----------|---------------------|
-| Add/remove bookmark at current line    | `mm`     | `:BookmarkToggle`   |
-| Jump to next bookmark in buffer        | `mn`     | `:BookmarkNext`     |
-| Jump to previous bookmark in buffer    | `mp`     | `:BookmarkPrev`     |
-| Show all bookmarks(toggle)             | `ma`     | `:BookmarkShowAll`  |
-| Clear bookmarks in current buffer only | `mc`     | `:Bookmarkclear`    |
-| Clear bookmarks in all buffers         | `mx`     | `:BookmarkClearAll` |
+| Shortcut  | Action          |
+|-----------|-----------------|
+| <leader>u | :UndotreeToggle |
 
 
-## tagbar
+### move
 
-`<leader>b` :TagbarToggle<CR>
+####  easymotion
 
-# git
-## vim-fugitive
-`:GV`
-
-
-# comment
-## commentary
-`gcc` to comment out a line.
-`gc` in visual mode to comment out the selection.
+| Shortcut | Action                |
+|----------|-----------------------|
+| `ss`       | <Plug>(easymotion-s2) |
 
 
-# check
-## neoformat
-sudo pacman -S astyle
+### format
+
+| Shortcut | Action     |
+|----------|------------|
+| ne       | :neoformat |
+
+### code
+
+#### comment
+
+| Shortcut | Action               |
+|----------|----------------------|
+| gc       | comment out a line   |
+| gcu      | uncomment out a line |
+
+#### vim-surroud
+
+| Shortcut | Action |
+|----------|--------|
+| ds       | remove |
+| cs       | change |
+| ys       | add    |
+
+#### far
+
+| Shortcut                                       | Action                   |
+|------------------------------------------------|--------------------------|
+| Far {pattern}{replace-with}{file-mask}[params] | find the text to replace |
+| F {pattern}{file-mask}[params]                 | Find only                |
 
 
-# nvim with tmux

@@ -1,6 +1,6 @@
 export ZSH="/home/feng/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git vi-mode sudo)
+ZSH_THEME="agnoster"
+plugins=(git vi-mode sudo zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 

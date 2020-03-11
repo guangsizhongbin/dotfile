@@ -62,6 +62,7 @@ set ignorecase
 set smartcase
 set shortmess+=c
 set inccommand=split
+set cursorcolumn
 silent !mkdir -p ~/.config/nvim/tmp/backup
 silent !mkdir -p ~/.config/nvim/tmp/undo
 "silent !mkdir -p ~/.config/nvim/tmp/sessions
@@ -144,6 +145,7 @@ noremap <LEADER>l <C-w>l
 noremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
 noremap sj :set splitbelow<CR>:split<CR>
 noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+noremap sl :set splitright<CR>:vsplit<CR>
 
 " Resize splits with arrow keys
 noremap <down> :res +5<CR>
@@ -156,6 +158,44 @@ noremap sp <C-w>t<C-w>K
 " Place the two screens side by side
 noremap cz <C-w>t<C-w>H
 
+" use r to run
+noremap r :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		set splitbelow
+		exec "!g++ -std=c++11 % -Wall -o %<"
+		:sp
+		:res -15
+		:term ./%<
+	elseif &filetype == 'java'
+		exec "!javac %"
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		set splitbelow
+		:sp
+		:term python3 %
+	elseif &filetype == 'html'
+		silent! exec "!".g:mkdp_browser." % &"
+	elseif &filetype == 'markdown'
+		exec "MarkdownPreview"
+	elseif &filetype == 'tex'
+		silent! exec "VimtexStop"
+		silent! exec "VimtexCompile"
+	elseif &filetype == 'dart'
+		CocCommand flutter.run
+	elseif &filetype == 'go'
+		set splitbelow
+		:sp
+		:term go run %
+	endif
+endfunc
+
 
 
 
@@ -163,6 +203,8 @@ noremap cz <C-w>t<C-w>H
 " === Other useful stuff
 " ===
 
+" Spelling Check with <space>sc
+noremap <LEADER>sc :set spell!<CR>
 
 " Auto change directory to current dir
 autocmd BufEnter * silent! lcd %:p:h
@@ -176,40 +218,28 @@ call plug#begin('~/.config/nvim/plugged')
 " Pretty Dress
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
 Plug 'morhetz/gruvbox'
+Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
-
-
-" file explorer
-Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf', { 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
-
 
 " easymotion
 Plug 'easymotion/vim-easymotion'
 
-
 " Editor Enhancement
 Plug 'tpope/vim-surround'
 Plug 'MattesGroeger/vim-bookmarks'
-Plug 'majutsushi/tagbar'
+Plug 'liuchengxu/vista.vim'
 
 " Auto Complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'SirVer/ultisnips'
 
 " Undo Tree
 Plug 'mbbill/undotree'
 
-
 " Markdown
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-
-" git
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 
 " comment
 Plug 'tpope/vim-commentary'
@@ -217,10 +247,28 @@ Plug 'tpope/vim-commentary'
 " formatting code
 Plug 'sbdchd/neoformat'
 
+" Find & Replace
+Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
+
+" git
+Plug 'airblade/vim-gitgutter'
+
 call plug#end()
+
+
+
 colorscheme gruvbox
+set termguicolors
 
 " ===================== Start of Plugin Settings =====================
+
+" ===
+" === coc
+" ===
+let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter']
+nmap tt :CocCommand explorer<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 
 
 " ===
@@ -234,18 +282,6 @@ let g:airline_powerline_fonts = 0
 " ===
 let g:indentLine_fileTypeExclude = ['markdown']
 
-
-
-" ===
-" === nerdtree
-" ===
-nmap <leader>t :NERDTreeToggle<CR>
-
-" ===
-" === ctrlp
-" ===
-let g:ctrlp_map = '<c-p>'
-
 " ===
 " === easymotion
 " ===
@@ -253,18 +289,43 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 nmap ss <Plug>(easymotion-s2)
 
 
+
 " ===
-" === tagbar
+" === Vista.vim
 " ===
-nmap <leader>b :TagbarToggle<CR>
+noremap <leader>b :Vista!!<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'ctags'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+function! NearestMethodOrFunction() abort
+	return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+set statusline+=%{NearestMethodOrFunction()}
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+
+
+" ===
+" === Ultisnips
+" ===
+let g:tex_flavor = "latex"
+inoremap <c-n> <nop>
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsJumpForwardTrigger="<c-e>"
+let g:UltiSnipsJumpBackwardTrigger="<c-n>"
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/', 'UltiSnips']
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 
 
 " ===
 " === vim-table-mode
 " ===
 noremap <LEADER>tm :TableModeToggle<CR>
-"let g:table_mode_disable_mappings = 1
-let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 
 
 " ===
@@ -274,12 +335,9 @@ noremap <leader>u :UndotreeToggle<CR>
 
 
 " ===
-" === neofomat
+" === neoformat
 " ===
 let g:neoformat_run_all_formatters = 1
-
-
-
 
 " ===================== End of Plugin Settings =====================
 
