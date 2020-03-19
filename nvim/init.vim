@@ -158,6 +158,25 @@ noremap sp <C-w>t<C-w>K
 " Place the two screens side by side
 noremap cz <C-w>t<C-w>H
 
+
+" use ak to Md2anki
+noremap ak :call Md2anki()<CR>
+func! Md2anki()
+	:g/^$/d
+	:%s/^/##### 
+	:%s/^##### #/#
+	:%s/\$//g
+endfunc
+
+
+" use md to ankitoMd
+noremap md :call Anki2md()<CR>
+func! Anki2md()
+	:%s/##### //g
+endfunc
+
+
+
 " use r to run
 noremap r :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -308,7 +327,16 @@ endfunction
 set statusline+=%{NearestMethodOrFunction()}
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
-
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified', 'method' ] ]
+      \ },
+      \ 'component_function': {
+      \   'method': 'NearestMethodOrFunction'
+      \ },
+      \ }
 
 " ===
 " === Ultisnips

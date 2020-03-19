@@ -159,5 +159,3 @@ Use the arrow keys to resize the current window.
 |------------------------------------------------|--------------------------|
 | Far {pattern}{replace-with}{file-mask}[params] | find the text to replace |
 | F {pattern}{file-mask}[params]                 | Find only                |
-
-
