@@ -2,7 +2,7 @@
 RED_COLOR='\E[1;31m'
 GREEN_COLOR='\E[1;32m'
 
-dotfiles=("nvim" "zsh" "tmux")
+dotfiles=("nvim" "zsh")
 config="$HOME/.config"
 dotfile="$HOME/dotfile"
 
@@ -24,7 +24,7 @@ else
 fi
 done
 
-## ln zsh
+# ln zsh
 dotfiles=(".zshrc" ".oh-my-zsh")
 for dot in ${dotfiles[@]}
 do

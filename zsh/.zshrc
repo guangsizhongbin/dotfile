@@ -53,6 +53,8 @@ alias ra="ranger"
 alias tn="tmux new -s"
 alias ts="tmux switch -t"
 alias ta="tmux attach -t"
+alias pbcopy="xclip -selection clipboard"
+alias pbpaste="xclip -selection clipboard -o"
 
 # fzf
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --preview '(cat -O ansi {} || cat {}) 2> /dev/null | head -500'"

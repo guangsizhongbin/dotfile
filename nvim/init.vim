@@ -162,17 +162,21 @@ noremap cz <C-w>t<C-w>H
 " use ak to Md2anki
 noremap ak :call Md2anki()<CR>
 func! Md2anki()
-	:g/^$/d
-	:%s/^/##### 
-	:%s/^##### #/#
-	:%s/\$//g
+	:let c=1
+	:while c <=10
+	:%s/\$/\\(
+	:%s/\$/\\)
+	:let c+=1
+	:endwhile
+	:%s/\s$//g
 endfunc
 
 
-" use md to ankitoMd
+" use ak to Md2anki
 noremap md :call Anki2md()<CR>
 func! Anki2md()
-	:%s/##### //g
+	:%s/\\(/$/g
+	:%s/\\)/$/g
 endfunc
 
 
@@ -284,8 +288,7 @@ set termguicolors
 " ===
 " === coc
 " ===
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter']
-nmap tt :CocCommand explorer<CR>
+let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter']
 nmap <silent> gd <Plug>(coc-definition)
 nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 
